@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Business", "TodoApp.Business\TodoApp.Business.csproj", "{E0888DA1-D6FA-47D6-A94C-E4C756BF7692}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Blazor", "TodoApp.Blazor\TodoApp.Blazor.csproj", "{BB59E4D8-3569-4F03-BEF4-EEC7963AEEA1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E92C9D2-F52B-42C8-A889-B601E11635D5} = {8E92C9D2-F52B-42C8-A889-B601E11635D5}
+		{E0888DA1-D6FA-47D6-A94C-E4C756BF7692} = {E0888DA1-D6FA-47D6-A94C-E4C756BF7692}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
