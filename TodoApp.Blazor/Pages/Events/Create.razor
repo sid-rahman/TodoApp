@@ -1,0 +1,82 @@
+﻿@page "/Events/Create"
+@using System.Text.Json.Nodes
+
+<div class="row mb-5">
+    <div class="col-lg-8">
+        <h1 class="mb-5"> New Event</h1>
+
+        <dvi class="row mb-3">
+            <label class="col-md-4 col-form-label">Title</label>
+            <div class="col-md-6">
+                <input class="form-control" @bind="eventDto.Title" />
+                <span class="text-danger">@errors["Title"]?[0]</span>
+            </div>
+        </dvi>
+        <dvi class="row mb-3">
+            <label class="col-md-4 col-form-label">Description</label>
+            <div class="col-md-6">
+                <textarea class="form-control" @bind="eventDto.Description" />
+                <span class="text-danger">@errors["Description"]?[0]</span>
+            </div>
+        </dvi>
+        <dvi class="row mb-3">
+            <label class="col-md-4 col-form-label">Start Date</label>
+            <div class="col-md-6">
+                <input type="datetime-local" @bind="eventDto.Start" />
+                <span class="text-danger">@errors["Start"]?[0]</span>
+            </div>
+        </dvi>
+        <dvi class="row mb-3">
+            <label class="col-md-4 col-form-label">End Date</label>
+            <div class="col-md-6">
+                <input type="datetime-local" @bind="eventDto.End" />
+                <span class="text-danger">@errors["End"]?[0]</span>
+            </div>
+        </dvi>
+        <dvi class="row mb-3">
+            <label class="col-md-4 form-check-label" for="AllDayCheckBox">All Day</label>
+            <div class="col-md-6">
+                <input class="form-check-input" type="checkbox" id="AllDayCheckBox" style="border-color: black" @bind="eventDto.IsAllDay" />
+            </div>
+        </dvi>
+
+        <div class="row">
+            <div class="offset-md-4 col-md-4">
+                <button class="btn btn-primary" @onclick="SaveEvent" style="margin-right: 5px;">Save</button>
+                <a class="btn btn-outline-dark" href="/Events">Cancel</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@inject HttpClient http
+@inject NavigationManager navManager
+
+@code {
+    public EventDTO eventDto { get; set; } = new EventDTO();
+    public JsonNode errors { get; set; } = new JsonObject();
+
+    private async Task SaveEvent()
+    {
+        var response = await http.PostAsJsonAsync("api/Events", eventDto);
+        if(response.IsSuccessStatusCode)
+        {
+            navManager.NavigateTo("/Events");
+        }
+        else
+        {
+            var strResponse = await response.Content.ReadAsStringAsync();
+            //Console.WriteLine("Json Response: \n" + strResponse);
+            try
+            {
+                var jsonResponse = JsonNode.Parse(strResponse);
+                errors = jsonResponse?["errors"] ?? new JsonObject();
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+    }
+}
