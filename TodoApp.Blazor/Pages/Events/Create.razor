@@ -57,6 +57,12 @@
     public EventDTO eventDto { get; set; } = new EventDTO();
     public JsonNode errors { get; set; } = new JsonObject();
 
+    protected override void OnInitialized()
+    {
+        eventDto.Start = DateTime.Now;
+        eventDto.End = DateTime.Now;
+    }
+
     private async Task SaveEvent()
     {
         var response = await http.PostAsJsonAsync("api/Events", eventDto);

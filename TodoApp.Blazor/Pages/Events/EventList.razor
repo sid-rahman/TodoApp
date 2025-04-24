@@ -40,7 +40,7 @@ else
                     </td>
                     <td>
                         <a class="btn btn-outline-dark btn-sm" href="/Events/Edit/@evt.Id">Edit</a>
-                        <a class="btn btn-outline-danger btn-sm" href="/Events/Delete/@evt.Id">Delete</a>
+                        <button class="btn btn-outline-danger btn-sm" @onclick="async () => await DeleteEvent(evt.Id)">Delete</button>
                     </td>
                 </tr>
             }
@@ -48,12 +48,26 @@ else
     </table>
 }
 
-@inject HttpClient http
+@inject HttpClient httpClient
+@inject IJSRuntime JS
+
 @code {
     private List<Event>? events;
 
     protected override async Task OnInitializedAsync()
     {
-        events = await http.GetFromJsonAsync<List<Event>>("api/Events");
+        events = await httpClient.GetFromJsonAsync<List<Event>>("api/Events");
+    }
+
+    private async Task DeleteEvent(int id)
+    {
+        var confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure you want to delete the event?");
+
+        if (confirmed)
+        {
+            await httpClient.DeleteAsync("api/Events/" + id);
+            events = await httpClient.GetFromJsonAsync<List<Event>>("api/Events");
+        }
+
     }
 }
