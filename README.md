@@ -1,5 +1,5 @@
 
-# ToDoApp 🎯
+# TodoApp 🎯
 
 A Blazor WebAssembly application designed to manage events efficiently. It allows users to create, edit, view, and delete events with a modern, responsive interface. The application integrates with a backend API to store and retrieve event data.
 
